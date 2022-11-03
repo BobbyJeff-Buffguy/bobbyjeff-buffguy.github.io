@@ -1,0 +1,371 @@
+
+/****************************************************************\
+*                           settings                             *
+\****************************************************************/
+/***************************************************************\
+*           line 32-37 jump/fall hight                          *
+*                                                               *
+*           line 56 stick size                                  *
+*                                                               *
+*           line 41-42 how far you can reach for a stick        *
+*                                                               *
+*           line 20-31-36 charicture                            *
+*                                                               *
+*           line   number of sticks                             *
+\****************************************************************/
+
+/****************************************************************\
+*                       My First Game
+\****************************************************************/
+var Beaver = function(x, y) {
+    this.x = 120;
+    this.y = y;
+    this.img = getImage("creatures/Hopper-Happy");
+    this.sticks = 0;
+};
+
+Beaver.prototype.draw = function() {
+    fill(255, 0, 0);
+    this.y = constrain(this.y, 20, height-110);
+    image(this.img, this.x, this.y, 40, 40);
+};
+
+Beaver.prototype.hop = function() {
+    this.img = getImage("creatures/Hopper-Jumping");
+    this.y -= 10;
+};
+keyTyped = function() {
+    if (keyCode === 0) {
+    playSound(getSound("retro/jump2"));
+    }
+};
+
+
+Beaver.prototype.fall = function() {
+    this.img = getImage("creatures/Hopper-Happy");
+    this.y += 10;
+};
+
+
+Beaver.prototype.checkForStickGrab = function(stick) {
+    if ((stick.x >= this.x && stick.x <= (this.x + 40)) &&
+        (stick.y >= this.y && stick.y <= (this.y + 40))) {
+        stick.y = -400;
+        this.sticks++;
+    }
+};
+
+var Stick = function(x, y) {
+    this.x = x;
+    this.y = y;
+};
+
+Stick.prototype.draw = function() {
+    fill(50, 10, 250);
+    rectMode(CENTER);
+    image(getImage("creatures/BabyWinston"), this.x + 10, this.y, -17, 40);
+};
+
+var beaver = new Beaver(200, 420);
+
+var sticks = [];
+for (var i = 0; i < 100; i++) {  
+    sticks.push(new Stick(i * 40 + 300, random(20, 433)));
+}
+
+var grassXs = [];
+for (var i = 0; i < 84; i++) { 
+    grassXs.push(i*20);
+}
+
+var grassxs = [];
+for (var a = 0; a < 25; a++) { 
+    grassxs.push(a*274);
+}
+
+var X = 200;
+var Y = -4600;
+
+draw = function() {
+    // static
+    background(99, 78, 52);
+image(getImage("cute/ShadowNorthEast"), 400, -111, -800, 374);
+    image(getImage("cute/ShadowNorthWest"), 794, -109, -800, 374);
+image(getImage("cute/ShadowNorthEast"), 187, 42, -800, 374);
+    image(getImage("cute/ShadowNorthEast"), 428, 14, -800, 374);
+image(getImage("cute/ShadowNorthEast"), 281, -11, -800, 374);
+    image(getImage("cute/ShadowNorthEast"), 169, -39, -800, 374);
+image(getImage("cute/ShadowNorthEast"), 400, 90, -800, 374);
+    image(getImage("cute/ShadowNorthEast"), 284, 32, -800, 374);
+image(getImage("cute/ShadowNorthEast"), 268, -101, -800, 374);
+    image(getImage("cute/ShadowNorthEast"), 333, 119, -800, 374);
+image(getImage("cute/ShadowNorthEast"), 152, 108, -800, 374);
+    image(getImage("cute/ShadowNorth"), -17, -25, 703, 932);  
+image(getImage("cute/ShadowNorth"), -17, -25, 703, 932);  
+    image(getImage("cute/ShadowNorth"), -17, -151, 703, 932);  
+image(getImage("cute/ShadowNorth"), -17, -185, 703, 932);  
+
+    fill(145, 98, 67);
+    rectMode(CORNER);
+    rect(0, height*0.90, width, height*0.10);
+
+fill(252, 252, 252);
+    ellipse(105, 416, 104, 47);
+fill(5, 2, 2);
+textSize (10);
+    text("help save my children", 57, 420);
+    image(getImage("creatures/Winston"), 5, 436, 94, 95);
+
+    for (var i = 0; i < grassXs.length; i++) {
+        image(getImage("cute/DirtBlock"), grassXs[i], height*0.87, 20, 20);
+        
+        grassXs[i] -= 1;
+        if (grassXs[i] <= -21) {
+            grassXs[i] = width;
+        }
+    }
+
+    for (var i = 0; i < grassXs.length; i++) {
+        image(getImage("cute/DirtBlock"), grassXs[i], height*-0.02, 20, 20);
+        
+        grassXs[i] -= 1;
+        if (grassXs[i] <= -20) {
+            grassXs[i] = width;
+        }
+    }
+
+    for (var i = 0; i < grassXs.length; i++) {
+        image(getImage("cute/DirtBlock"), grassXs[i], height*0.00, 20, 20);
+        
+        grassXs[i] -= -1;
+        if (grassXs[i] <= -20) {
+            grassXs[i] = width;
+        }
+    }
+
+    for (var a = 0; a < grassxs.length; a++) {
+        image(getImage("cute/DirtBlock"), grassxs[a], height*0.02, 20, 20);
+        
+        grassxs[a] -= 1;
+        if (grassxs[a] <= -20) {
+            grassxs[a] = width;
+        }
+    }
+    
+    for (var i = 0; i < sticks.length; i++) {
+        sticks[i].draw();
+        beaver.checkForStickGrab(sticks[i]);
+        sticks[i].x -= 1;
+    }
+    
+    textSize(18);
+    text("Score: " + beaver.sticks, 20, 30);
+    
+    if (beaver.sticks/sticks.length === 1.00) {
+        textSize(36);
+        text("YOU WIN!!!!", 200, 300);
+    }
+
+ if (keyIsPressed && keyCode === 0 && this.y >= 110) {
+    beaver.hop();
+    } else {
+        beaver.fall();
+    }
+
+    beaver.draw();
+textSize(18);
+fill(36, 8, 8);
+text("how hopper became cool", 189, 575);
+
+    if (beaver.sticks/sticks.length <= 0.99) {
+        fill(247, 235, 5);
+        textSize(35);
+        text("YOU LOSE ! ! !", X , Y);
+        Y++;
+    }
+};
+
+var arcSize = 383;
+draw = function() {
+background(0, 0, 0);
+
+    fill(0, 0, 0);
+    image(getImage("creatures/Winston"), 92, 85, 400, 400);
+    
+    arc(297, 270, 406, 415, arcSize, 758);
+
+arcSize += 2;
+
+fill(255, 0, 0);
+textSize(44);
+text("ENTER ! ! !", 188, 585);
+textSize(12);
+text("press", 270, 544);
+textSize(20);
+text("bobbyjeff-buffguy presents", 210, 80);
+};
+
+    keyPressed = function() {
+         if(keyTyped && keyCode === 10) {
+draw = function() {
+background(10, 234, 250);
+fill(0, 255, 4);
+rect(-2, 398, 602, 226);
+//winston
+stroke(0, 0, 0);
+fill(230, 255, 0);
+//body
+ellipse(104, 524, 100, 100);
+//eyes
+fill(0, 0, 0);
+ellipse(122, 500, 10, 10);
+ellipse(75, 500, 10, 10);
+//mouth
+fill(255, 0, 0);
+ellipse(97, 540, 50, 50);
+
+textSize(28);
+text("ready or not here", 5, 443);
+text("I come ! ! !", 35, 470);
+//cave
+noStroke();
+fill(128, 102, 102);
+rect(373, 260, 162,162);
+fill(0, 0, 0);
+ellipse(455, 338, 162, 153);
+fill(128, 102, 102);
+rect(341, 398, 234, 60);
+rect(326, 244, 60, 180);
+rect(524, 244, 123, 180);
+rect(341, 232, 254, 60);
+//are you scrolling through the code?
+rect(277, 376, 68, 60);
+rect(305, 349, 68, 60);
+rect(308, 412, 68, 60);
+rect(425, 424, 68, 60);
+rect(380, 218, 68, 60);
+rect(548, 218, 68, 60);
+stroke(87, 60, 60);
+ellipse(346, 397, 68, 60);
+arc(538, 264, 90, 104, 0, 180);
+fill(255, 0, 0);
+text("cool cave yah", 414, 343);
+text("lets explore", 448, 378);
+image(getImage("creatures/BabyWinston"), 391, 360, 45, 45);
+image(getImage("creatures/BabyWinston"), 432, 388, 45, 45);
+image(getImage("creatures/BabyWinston"), 391, 400, 45, 45);
+fill(251, 255, 0);
+ellipse(0, 0, 200, 200);
+fill(255, 255, 255);
+text("ENTER ! ! !", 250, 25);
+
+    keyPressed = function() {
+         if(keyTyped && keyCode === 10) {
+
+draw = function() {
+    // static
+    background(99, 78, 52);
+image(getImage("cute/ShadowNorthEast"), 400, -111, -800, 374);
+    image(getImage("cute/ShadowNorthWest"), 794, -109, -800, 374);
+image(getImage("cute/ShadowNorthEast"), 187, 42, -800, 374);
+    image(getImage("cute/ShadowNorthEast"), 428, 14, -800, 374);
+image(getImage("cute/ShadowNorthEast"), 281, -11, -800, 374);
+    image(getImage("cute/ShadowNorthEast"), 169, -39, -800, 374);
+image(getImage("cute/ShadowNorthEast"), 400, 90, -800, 374);
+    image(getImage("cute/ShadowNorthEast"), 284, 32, -800, 374);
+image(getImage("cute/ShadowNorthEast"), 268, -101, -800, 374);
+    image(getImage("cute/ShadowNorthEast"), 333, 119, -800, 374);
+image(getImage("cute/ShadowNorthEast"), 152, 108, -800, 374);
+    image(getImage("cute/ShadowNorth"), -17, -25, 703, 932);  
+image(getImage("cute/ShadowNorth"), -17, -25, 703, 932);  
+    image(getImage("cute/ShadowNorth"), -17, -151, 703, 932);  
+image(getImage("cute/ShadowNorth"), -17, -185, 703, 932);  
+
+    fill(145, 98, 67);
+    rectMode(CORNER);
+    rect(0, height*0.90, width, height*0.10);
+
+fill(252, 252, 252);
+    ellipse(105, 416, 104, 47);
+fill(5, 2, 2);
+textSize (10);
+    text("help save my children", 57, 420);
+    image(getImage("creatures/Winston"), 5, 436, 94, 95);
+
+    for (var i = 0; i < grassXs.length; i++) {
+        image(getImage("cute/DirtBlock"), grassXs[i], height*0.87, 20, 20);
+        
+        grassXs[i] -= 1;
+        if (grassXs[i] <= -21) {
+            grassXs[i] = width;
+        }
+    }
+
+    for (var i = 0; i < grassXs.length; i++) {
+        image(getImage("cute/DirtBlock"), grassXs[i], height*-0.02, 20, 20);
+        
+        grassXs[i] -= 1;
+        if (grassXs[i] <= -20) {
+            grassXs[i] = width;
+        }
+    }
+
+    for (var i = 0; i < grassXs.length; i++) {
+        image(getImage("cute/DirtBlock"), grassXs[i], height*0.00, 20, 20);
+        
+        grassXs[i] -= -1;
+        if (grassXs[i] <= -20) {
+            grassXs[i] = width;
+        }
+    }
+
+    for (var a = 0; a < grassxs.length; a++) {
+        image(getImage("cute/DirtBlock"), grassxs[a], height*0.02, 20, 20);
+        
+        grassxs[a] -= 1;
+        if (grassxs[a] <= -20) {
+            grassxs[a] = width;
+        }
+    }
+    
+    for (var i = 0; i < sticks.length; i++) {
+        sticks[i].draw();
+        beaver.checkForStickGrab(sticks[i]);
+        sticks[i].x -= 1;
+    }
+    
+    textSize(18);
+    text("Score: " + beaver.sticks, 20, 30);
+    
+    if (beaver.sticks/sticks.length === 1.00) {
+        textSize(36);
+        text("YOU WIN!!!!", 200, 300);
+    }
+    
+    if (keyIsPressed && keyCode === 0) {
+        beaver.hop();
+    } else {
+        beaver.fall();
+    }
+    beaver.draw();
+textSize(18);
+fill(36, 8, 8);
+text("how hopper became cool", 189, 575);
+
+    if (beaver.sticks/sticks.length <= 0.99) {
+        fill(247, 235, 5);
+        textSize(35);
+        text("YOU LOSE ! ! !", X , Y);
+        Y++;
+    }
+};
+    }
+};
+
+};
+    }
+//my first game thats not a challange
+    };
+
+
+                      //weepy hoo ha 

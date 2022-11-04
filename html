@@ -4,8 +4,10 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
      </head> 
-        <script>
-          
+
+ 
+        <script src="my-project.js">
+    
 /****************************************************************\
 *                           settings                             *
 \****************************************************************/
@@ -271,7 +273,9 @@ text("ENTER ! ! !", 250, 25);
 
 draw = function() {
     // static
-    background(99, 78, 52);
+                    //draw function
+//shadows for cave
+        background(99, 78, 52);
 image(getImage("cute/ShadowNorthEast"), 400, -111, -800, 374);
     image(getImage("cute/ShadowNorthWest"), 794, -109, -800, 374);
 image(getImage("cute/ShadowNorthEast"), 187, 42, -800, 374);
@@ -292,10 +296,11 @@ image(getImage("cute/ShadowNorth"), -17, -185, 703, 932);
     rectMode(CORNER);
     rect(0, height*0.90, width, height*0.10);
 
-fill(252, 252, 252);
+//winston
+    fill(252, 252, 252);
     ellipse(105, 416, 104, 47);
-fill(5, 2, 2);
-textSize (10);
+    fill(5, 2, 2);
+    textSize (10);
     text("help save my children", 57, 420);
     image(getImage("creatures/Winston"), 5, 436, 94, 95);
 
@@ -334,31 +339,34 @@ textSize (10);
             grassxs[a] = width;
         }
     }
-    
+
+//grab sticks
     for (var i = 0; i < sticks.length; i++) {
         sticks[i].draw();
         beaver.checkForStickGrab(sticks[i]);
         sticks[i].x -= 1;
     }
-    
+//draw score
     textSize(18);
     text("Score: " + beaver.sticks, 20, 30);
-    
+//text you win if statement
     if (beaver.sticks/sticks.length === 1.00) {
         textSize(36);
         text("YOU WIN!!!!", 200, 300);
     }
-    
+   //jump
     if (keyIsPressed && keyCode === 0) {
         beaver.hop();
     } else {
         beaver.fall();
     }
     beaver.draw();
+//hoper became cool
 textSize(18);
 fill(36, 8, 8);
 text("how hopper became cool", 189, 575);
 
+// you lose if statement
     if (beaver.sticks/sticks.length <= 0.99) {
         fill(247, 235, 5);
         textSize(35);
@@ -374,9 +382,9 @@ text("how hopper became cool", 189, 575);
 //my first game thats not a challange
     };
 
-
+update();
                       //weepy hoo ha 
-        </script>
+        </script> 
         <body>
         </body>
 </html>

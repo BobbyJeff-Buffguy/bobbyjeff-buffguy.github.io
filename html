@@ -6,7 +6,12 @@
      </head> 
 
  
-        <script src="my-project.js">
+        <script src="https://cdn.jsdelivr.net/processing.js/1.4.8/processing.min.js"></script>
+    <script>
+  var programCode = function(processingInstance) {
+    with (processingInstance) {
+      size(400, 400); 
+      frameRate(30);
     
 /****************************************************************\
 *                           settings                             *
@@ -379,12 +384,18 @@ text("how hopper became cool", 189, 575);
 
 };
     }
-//my first game thats not a challange
+
     };
 
 update();
                       //weepy hoo ha 
-        </script> 
+          var canvas = document.getElementById("mycanvas"); 
+  // Pass the function to ProcessingJS constructor
+  var processingInstance = new Processing(canvas, programCode); 
+  </script>
+ 
+         <canvas id="mycanvas"></canvas> 
+ 
         <body>
         </body>
 </html>
